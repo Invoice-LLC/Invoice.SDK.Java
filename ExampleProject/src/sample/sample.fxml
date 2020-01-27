@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<GridPane alignment="center" hgap="10" vgap="10" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
+   <columnConstraints>
+      <ColumnConstraints />
+   </columnConstraints>
+   <rowConstraints>
+      <RowConstraints />
+   </rowConstraints>
+   <children>
+      <Pane prefHeight="358.0" prefWidth="495.0">
+         <children>
+            <Button fx:id="payButton" layoutX="26.0" layoutY="115.0" mnemonicParsing="false" text="Оплатить" />
+            <Button fx:id="checkButton" layoutX="100.0" layoutY="115.0" mnemonicParsing="false" text="Проверить" />
+            <Button fx:id="cancelButton" layoutX="184.0" layoutY="115.0" mnemonicParsing="false" text="Отменить" />
+            <Button fx:id="authButton" layoutX="184.0" layoutY="73.0" mnemonicParsing="false" text="Авторизация" />
+            <TextField fx:id="apiKey" layoutX="26.0" layoutY="73.0" promptText="API Key" text="1526fec01b5d11f4df4f2160627ce351" />
+            <TextField fx:id="login" layoutX="26.0" layoutY="25.0" text="demo" />
+            <Button fx:id="refundButton" layoutX="262.0" layoutY="115.0" mnemonicParsing="false" text="Вернуть" />
+            <Label fx:id="link" accessibleRole="HYPERLINK" layoutX="26.0" layoutY="153.0" />
+         </children></Pane>
+   </children>
+</GridPane>

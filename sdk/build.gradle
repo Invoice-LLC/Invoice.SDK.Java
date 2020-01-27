@@ -1,0 +1,57 @@
+plugins {
+    id 'org.ajoberstar.grgit' version '1.7.2'
+}
+
+apply plugin: 'java'
+apply plugin: 'org.ajoberstar.grgit'
+
+version = '1.0'
+compileJava.options.encoding = 'UTF-8'
+compileTestJava.options.encoding = 'UTF-8'
+
+jar {
+    manifest {
+        def gitRevision = "";
+        def gitBranch = "";
+        try {
+           gitRevision = "${grgit.head().abbreviatedId}";
+           gitBranch = "${grgit.branch.getCurrent().name}";
+        } catch (Exception e) {
+        }
+
+        attributes (
+                'Build-Date' : new Date().format("dd.MM.yyyy HH:mm:ss"),
+                'Implementation-Version': version,
+                'Implementation-Vendor' : 'CSI',
+                'Build-Machine' : InetAddress.getLocalHost().getCanonicalHostName(),
+                'Vendor-URL' : 'https://invoice.su/',
+                'Vendor-Email' : 'api@invoice.su',
+                'Vendor-Phone' : '+7 (495) 266-69-19',
+                'Project': project.name,
+                'Revision': gitRevision,
+                'Branch': gitBranch
+        )
+    }
+}
+
+repositories {
+    mavenCentral()
+    maven {
+        url "https://artifactory.setmachine.ru:8443/repository/set10-api-public"
+    }
+}
+
+dependencies {
+    compileOnly 'org.apache.commons:commons-compress:1.8.1',
+     'org.apache.httpcomponents:httpclient:4.5.2',
+     'org.apache.httpcomponents:httpmime:4.5.2',
+
+     'com.fasterxml.jackson.core:jackson-annotations:2.9.3',
+     'com.fasterxml.jackson.core:jackson-core:2.9.3',
+     'com.fasterxml.jackson.core:jackson-databind:2.9.3',
+     'com.fasterxml.jackson.module:jackson-module-jaxb-annotations:2.9.3'
+}
+
+jar {
+    baseName = 'Invoice.SDK.Java'
+}

@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="module_sdk" default="compile.module.sdk">
+  <dirname property="module.sdk.basedir" file="${ant.file.module_sdk}"/>
+  
+  <property name="module.jdk.home.sdk" value="${project.jdk.home}"/>
+  <property name="module.jdk.bin.sdk" value="${project.jdk.bin}"/>
+  <property name="module.jdk.classpath.sdk" value="${project.jdk.classpath}"/>
+  
+  <property name="compiler.args.sdk" value="-encoding UTF-8 -source 8 -target 8 ${compiler.args}"/>
+  
+  <property name="sdk.output.dir" value="${module.sdk.basedir}/../classes/production/sdk"/>
+  <property name="sdk.testoutput.dir" value="${module.sdk.basedir}/../classes/test/sdk"/>
+  
+  <path id="sdk.module.bootclasspath">
+    <!-- Paths to be included in compilation bootclasspath -->
+  </path>
+  
+  <path id="sdk.module.production.classpath">
+    <path refid="${module.jdk.classpath.sdk}"/>
+  </path>
+  
+  <path id="sdk.runtime.production.module.classpath">
+    <pathelement location="${sdk.output.dir}"/>
+  </path>
+  
+  <path id="sdk.module.classpath">
+    <path refid="${module.jdk.classpath.sdk}"/>
+    <pathelement location="${sdk.output.dir}"/>
+  </path>
+  
+  <path id="sdk.runtime.module.classpath">
+    <pathelement location="${sdk.testoutput.dir}"/>
+    <pathelement location="${sdk.output.dir}"/>
+  </path>
+  
+  
+  <patternset id="excluded.from.module.sdk">
+    <patternset refid="ignored.files"/>
+  </patternset>
+  
+  <patternset id="excluded.from.compilation.sdk">
+    <patternset refid="excluded.from.module.sdk"/>
+  </patternset>
+  
+  <path id="sdk.module.sourcepath">
+    <dirset dir="${module.sdk.basedir}">
+      <include name="src"/>
+    </dirset>
+  </path>
+  
+  
+  <target name="compile.module.sdk" depends="compile.module.sdk.production,compile.module.sdk.tests" description="Compile module sdk"/>
+  
+  <target name="compile.module.sdk.production" depends="register.custom.compilers" description="Compile module sdk; production classes">
+    <mkdir dir="${sdk.output.dir}"/>
+    <javac2 destdir="${sdk.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.sdk}/javac">
+      <compilerarg line="${compiler.args.sdk}"/>
+      <bootclasspath refid="sdk.module.bootclasspath"/>
+      <classpath refid="sdk.module.production.classpath"/>
+      <src refid="sdk.module.sourcepath"/>
+      <patternset refid="excluded.from.compilation.sdk"/>
+    </javac2>
+    
+    <copy todir="${sdk.output.dir}">
+      <fileset dir="${module.sdk.basedir}/src">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="compile.module.sdk.tests" depends="register.custom.compilers,compile.module.sdk.production" description="compile module sdk; test classes" unless="skip.tests"/>
+  
+  <target name="clean.module.sdk" description="cleanup module">
+    <delete dir="${sdk.output.dir}"/>
+    <delete dir="${sdk.testoutput.dir}"/>
+  </target>
+</project>
