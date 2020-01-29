@@ -1,1 +1,2 @@
-# Invoice.SDK.Java
+## Invoice.SDK.Java
+В репозитории находятся SDK для интеграции и простой пример для интеграции Invoice, используя Java
